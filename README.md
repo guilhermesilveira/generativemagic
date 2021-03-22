@@ -84,7 +84,7 @@ Most of the routine description for magic effects are in their respective books,
 - Remember to give credit to Generative Magic, as you would do with any other magician.
 - Contribute with your code, customization etc, if possible
 
-## Why make its code public on github?
+## Why make its code public?
 
 I grew in a community of open source and shared knowledge. I am the founder of a school, so I was heavily
 involved in education. Both approaches value sharing its knowledge with others interested on it.
