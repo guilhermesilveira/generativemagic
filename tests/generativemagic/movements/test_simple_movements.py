@@ -1,6 +1,6 @@
 from numpy.testing import assert_array_equal
 
-from generativemagic.movements.simple import TopToBottom, BottomToTop, TopToLastToBottom, BottomToSecond
+from generativemagic.movements.simple_movements import TopToBottom, BottomToTop, TopToLastToBottom, BottomToSecond
 
 
 def test_top_to_bottom_move():
