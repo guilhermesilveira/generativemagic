@@ -9,8 +9,8 @@ from generativemagic.spelling import CachedLanguage, Language, English
 
 
 class FourAcesExample:
-    """This example searches for a stacked deck which gives you freedom to execute a SpellingPosition effect
-    right after performing a Four Aces effect.
+    """This effect created by Guilherme Silveira searches for a stacked deck which gives you freedom to execute a SpellingPosition
+    effect right after performing a Four Aces effect.
 
     The magician performs a Four Aces effect, giving a lot of freedom to the
     volunteer. No matter how the deck ends up, we are ready to perform another
@@ -18,7 +18,9 @@ class FourAcesExample:
     order you want, to move on. One could add new effects to it.
 
     This example shows how z3 solver can be used to find stacked deck positions,
-    while still giving a lot of freedom to the volunteers."""
+    while still giving a lot of freedom to the volunteers.
+
+    The copyright and performance rights belong to the author."""
 
     def __init__(self, language: Language):
         self.__language = language
@@ -47,9 +49,9 @@ class FourAcesExample:
 def run():
     language = CachedLanguage(English())
     example = FourAcesExample(language)
-    example.run(basic_parameter_space())
+    # example.run(basic_parameter_space())
     # example.run(basic_parameter_space2())
-    # example.run(parameter_space())
+    example.run(parameter_space())
 
 
 run()

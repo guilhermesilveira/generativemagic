@@ -1,13 +1,14 @@
 ## What is this project?
 
-GenerativeMagic is [Guilherme Silveira's](https://www.linkedin.com/in/guilhermeazevedosilveira) interpretation on generative magic, the use of [Generative Design](https://en.wikipedia.org/wiki/Generative_design) for magic.
+GenerativeMagic is [Guilherme Silveira's](https://www.linkedin.com/in/guilhermeazevedosilveira) interpretation on generative magic,
+the use of [Generative Design](https://en.wikipedia.org/wiki/Generative_design) for the magic art.
 
-And what is generative magic? It is magic created by computer, a field of computer-automated design and computer art
-coined by this project.
+And what is generative magic? It is magic created, enhanced or suggested by a computer, a field of computer-automated design
+and computer art coined by this project.
 
 ## How can a computer create magic?
 
-Elmsley and many other magicians deduced algebraic formulas to create amazing effects. Now we can discover, combine and generate
+Elmsley and many other magicians deduced formulas to create amazing effects. Now we can discover, combine and generate
 infinite possibilities with generative magic.
 
 Computers can aid in the creation process of magic in several ways. This project aims but is not limited to the following topics:
@@ -15,7 +16,7 @@ Computers can aid in the creation process of magic in several ways. This project
 - a new effect can be created
 - a new effect can be suggested to improve an existing routine
 - generate new magical movements, routines and acts
-- suggest in promptu effects
+- suggest impromptu effects
 - generate unique routines every time a magician presents
 - generate scripts using natural language processing for existing and new routines
 - catalog magical movements
@@ -41,7 +42,7 @@ So even a shuffled deck can be spread, recognized using - for instance - compute
 
 Yes, use computer vision or any other approach to encode the current shuffled deck into the generative process.
 
-## Is this restricted to cards?
+## Is this restricted to card magic?
 
 So far the implementation is done based on card effects. Simple and gaffed cards can be used. Stacked, memorized, shuffled.
 
@@ -54,8 +55,8 @@ No and yes. GenerativeMagic will help you create something new, and then make us
 ## What is runtime/showtime?
 
 In computer science we say runtime is when the program is running.
-But GenerativeMagic will run before the show to setup the presentation and also during the show.
-We make the distiction of those two performance moments by using the words *setup time* and *showtime*. Setup time is
+However, GenerativeMagic will run before the show to set up the presentation and also during the show.
+We make the distinction of those two performance moments by using the words *setup time* and *showtime*. Setup time is
 not the best word, suggestions are welcome.
 
 
@@ -65,7 +66,7 @@ Magic effects are often taught and sold as fixed effects, but most of them are p
 Those parameters come from a parameter space (the feasible region) which can be either explored
 to find new magic, or to control the effect's output.
 
-Magical movements often are random but can switched to deterministic, controlled or understood behaviour under
+Magical movements are often random but can switched to deterministic, controlled or understood behaviour under
 a few circumstances, for example:
 - online live magic sessions allows the magician to capture the current setup of a volunteers deck
 - parametrized inputs can guarantee deterministic output even in random selections
@@ -74,7 +75,7 @@ a few circumstances, for example:
 Parametric design rules can be used to generate simple rules and complex effects.
 
 
-## Where is the human readable routine description for each magic effect?
+## Where is the human-readable routine description for each magic effect?
 
 Most of the routine description for magic effects are in their respective books, dvds etc.
 
@@ -98,5 +99,5 @@ No. Let me know when you make use of it ;)
 
 ## Can I execute the routine you created?
 
-Just like any art form, if you use a tool and your own input to create an art piece, it is your art.
+Just like any art form, if you use a tool, and your own input to create an art piece, it is your art.
 If I used it first, with my input, to create a magic routine, it is my art.
