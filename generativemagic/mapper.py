@@ -13,18 +13,22 @@ class EffectInvalidParameterError(BaseException):
     pass
 
 
-def run_parameter_space(type_to_map, parameter_space, callback):
+def run_parameter_space(type_to_map, parameter_space, callback=None, deck_creator=simple_deck):
     print(parameter_space)
     items = list(product(*parameter_space))
+    results = []
     with tqdm(total=len(items)) as progress_bar:
         for parameters in items:
             try:
                 instance: Effect = type_to_map(*parameters)
-                result = instance.apply(simple_deck())
-                callback(instance, result)
+                result = instance.apply(deck_creator())
+                results.append(result)
+                if callback:
+                    callback(instance, result)
             except EffectInvalidParameterError:
                 pass
             progress_bar.update(1)
+    return results
 
 
 def collect_parameter_space(type_to_map, parameter_space):
