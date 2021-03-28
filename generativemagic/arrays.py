@@ -15,3 +15,11 @@ def np_index(items, x):
         if items[i] == x:
             return i
     return -1
+
+
+def flat_map(xs):
+    """Surprisingly computational efficient implementation for a flat map"""
+    mapped = []
+    for x in xs:
+        mapped.extend(x)
+    return mapped
