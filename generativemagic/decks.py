@@ -4,6 +4,10 @@ SUIT_CLUBS = 0
 SUIT_HEARTS = 1
 SUIT_SPADES = 2
 SUIT_DIAMONDS = 3
+ACE = 1
+JACK = 11
+QUEEN = 12
+KING = 13
 
 
 def simple_deck():
@@ -16,7 +20,7 @@ def random_deck():
     return np.random.permutation(52) + 1
 
 
-def position_to_value(k):
+def position_to_value(k: int):
     assert 0 < k < 53
     return (k - 1) % 13 + 1
 
