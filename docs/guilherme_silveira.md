@@ -42,6 +42,12 @@ so they can work as controls and effects.
 > Penny Wise Force all of them at once. Keep a PINKY BREAK AS to show something
 > four aces in one side, spellingon the other side. 
 
+## Secret Agent
+> Volunteer picks a number for the agent and does not say it (007).
+> Counts the cards into a new stack. Peek the agent. Puts the stack back.
+> Does a cut.
+- Ends with the reverted order of the top N cards
+
 # Not yet implemented
 
 ## Impromptu Name a card name

@@ -1,5 +1,11 @@
 # Encyclopedia of Card Tricks, Jean Hugard
 
+## Twin Souls
+> TwinSouls, Al Baker
+> Two cards are selected, two cards are revealed.
+- Maintain order
+- [TwinSouls]
+
 ## Simplified Reverse, Gibson
 > If a chosen card is on top of the deck, it will appear reversed in the middle
 - [SimplifiedReverse], [IsSimplifiedReversed], [TagChosenOnTop]
