@@ -17,7 +17,7 @@ class SimplifiedReverse(Effect):
     def __init__(self, put_back_on):
         self.__put_back_on = put_back_on
 
-    def apply(self, sequence):
+    def apply(self, sequence, chosen=None):
         if self.__put_back_on == DECK_TOP:
             return sequence
         return np.roll(sequence, -1)

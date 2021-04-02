@@ -16,7 +16,7 @@ class ThoughtTransference(Effect):
             self.__returning_order = REVERT_COMPLETELY
         self.__n = n
 
-    def apply(self, sequence):
+    def apply(self, sequence, chosen=None):
 
         if self.__returning_order == REVERT_COMPLETELY:
             return np.concatenate([sequence[self.__n ** 2 - 1::-1], sequence[self.__n ** 2:]])
