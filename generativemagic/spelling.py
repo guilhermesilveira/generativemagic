@@ -25,10 +25,15 @@ def _name_to_position(values, suits, name: str):
 
 
 class Language:
+    """Default structure for a basic language implementation in generative magic."""
+
     def card_name(self, c: int) -> str:
         raise Exception(f"not implemented on {type(self)}")
 
     def position_to_suit_name(self, k: int):
+        raise Exception(f"not implemented on {type(self)}")
+
+    def name_to_position(self, name: str):
         raise Exception(f"not implemented on {type(self)}")
 
     def name_of_deck(self, deck: List[int]):
@@ -43,25 +48,29 @@ class Language:
             names[len(name)].append(full_name)
         return names
 
-    def name_to_position(self, name: str):
-        raise Exception(f"not implemented on {type(self)}")
-
 
 class CachedLanguage(Language):
+    """Implementation that caches all card names."""
+
     def __init__(self, language: Language):
         self._language = language
-        self.cards = [""]
+        self._cards = [""]
         for c in range(1, 53):
-            self.cards.append(language.card_name(c))
+            self._cards.append(language.card_name(c))
 
     def card_name(self, k: int):
-        return self.cards[k]
+        return self._cards[k]
 
     def name_to_position(self, name: str):
         return self._language.name_to_position(name)
 
+    def position_to_suit_name(self, k: int):
+        return self._language.position_to_suit_name(k)
+
 
 class SimpleLanguage(Language):
+    """A base implementation for most languages. It should be enough for several languages."""
+
     def __init__(self, names: Tuple, suits: Tuple):
         self._names = names
         self._suits = suits
