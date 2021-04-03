@@ -8,7 +8,7 @@ def grade_five_or_ten(effects: Effects, message: str, accept_king=False, accept_
         effects.append_if(5, "Out of 5 stars ")
     elif effects.current_value() == 10:
         effects.append(1, "Rate 10 " + message)
-        effects.append_if(5, "Out of 10 ")
+        effects.append_if(10, "Out of 10 ")
     elif accept_king and effects.current_value() == KING:
         effects.append(1, "They are the best, the king " + message)
         effects.append_if(KING, "Of all the kings")
@@ -20,6 +20,25 @@ def grade_five_or_ten(effects: Effects, message: str, accept_king=False, accept_
     else:
         return False
     return True
+
+
+def almost_perfect(effects: Effects, message: str):
+    if effects.current_value() == 4:
+        effects.append(1, "Rate 4 stars " + message)
+        effects.append_if(5, "Out of 5 stars ")
+    elif effects.current_value() == 9:
+        effects.append(1, "Rate 9 " + message)
+        effects.append_if(10, "Out of 10 ")
+    else:
+        return False
+    return True
+
+
+def perfect_or_imperfect(effects: Effects, msg: str):
+    """Checks for either a perfect or near perfect result."""
+    if grade_five_or_ten(effects, msg):
+        return True
+    return almost_perfect(effects, msg)
 
 
 def generic_101(effects: Effects, type_learning: str):
