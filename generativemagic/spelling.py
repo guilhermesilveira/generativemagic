@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import Tuple, List
 
 from generativemagic.decks import position_to_value, position_to_suit
 
@@ -24,13 +25,13 @@ def _name_to_position(values, suits, name: str):
 
 
 class Language:
-    def card_name(self, c: int):
-        pass
+    def card_name(self, c: int) -> str:
+        raise Exception(f"not implemented on {type(self)}")
 
     def position_to_suit_name(self, k: int):
-        pass
+        raise Exception(f"not implemented on {type(self)}")
 
-    def name_of_deck(self, deck):
+    def name_of_deck(self, deck: List[int]):
         names = map(self.card_name, deck)
         return ",".join(names)
 
@@ -60,15 +61,10 @@ class CachedLanguage(Language):
         return self._language.name_to_position(name)
 
 
-class English(Language):
-    def __init__(self):
-        self._names = ["", "ace", "two", "three", "four", "five",
-                       "six", "seven", "eight", "nine", "ten",
-                       "jack", "queen", "king"]
-        self._suits = ["clubs", "hearts", "spades", "diamonds"]
-
-    def card_name(self, c):
-        return f"{self._names[position_to_value(c)]} of {self.position_to_suit_name(c)}"
+class SimpleLanguage(Language):
+    def __init__(self, names: Tuple, suits: Tuple):
+        self._names = names
+        self._suits = suits
 
     def position_to_suit_name(self, k):
         return self._suits[position_to_suit(k)]
@@ -76,36 +72,42 @@ class English(Language):
     def name_to_position(self, name):
         return _name_to_position(self._names, self._suits, name)
 
-
-class Portuguese(Language):
-
-    def __init__(self):
-        self._names = ["", "as", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "valete",
-                       "dama", "rei"]
-        self._suits = ["paus", "copas", "espadas", "ouros"]
-
-    def card_name(self, c: int):
-        return f"{self._names[position_to_value(c)]} de {self.position_to_suit_name(c)}"
-
-    def position_to_suit_name(self, k: int):
-        return self._suits[position_to_suit(k)]
-
-    def name_to_position(self, name: str):
-        return _name_to_position(self._names, self._suits, name)
-
-
-class Japanese(Language):
-    def __init__(self):
-        self._names = ["", "エース", "に", "さん", "よん", "ご",
-                       "ろく", "なな", "はち", "きゅう", "じゅう",
-                       "ジャック", "クイーン", "キング"]
-        self._suits = ["クラブ", "ハート", "スペード", "ダイヤ"]
-
     def card_name(self, c):
-        return f"{self.position_to_suit_name(c)}の{self._names[position_to_value(c)]}"
+        return self.connect_value_and_suit(self._names[position_to_value(c)],
+                                           self.position_to_suit_name(c))
 
-    def position_to_suit_name(self, k):
-        return self._suits[position_to_suit(k)]
+    def connect_value_and_suit(self, value, suit):
+        raise Exception(f"Not yet implemented for {self}")
 
-    def name_to_position(self, name):
-        return _name_to_position(self._names, self._suits, name)
+
+class English(SimpleLanguage):
+    def __init__(self):
+        super().__init__(("", "ace", "two", "three", "four", "five",
+                          "six", "seven", "eight", "nine", "ten",
+                          "jack", "queen", "king"),
+                         ("clubs", "hearts", "spades", "diamonds"))
+
+    def connect_value_and_suit(self, value, suit):
+        return f"{value} of {suit}"
+
+
+class Portuguese(SimpleLanguage):
+
+    def __init__(self):
+        super().__init__(("", "as", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+                          "valete", "dama", "rei"),
+                         ("paus", "copas", "espadas", "ouros"))
+
+    def connect_value_and_suit(self, value, suit):
+        return f"{value} de {suit}"
+
+
+class Japanese(SimpleLanguage):
+    def __init__(self):
+        super().__init__(("", "エース", "に", "さん", "よん", "ご",
+                          "ろく", "なな", "はち", "きゅう", "じゅう",
+                          "ジャック", "クイーン", "キング"),
+                         ("クラブ", "ハート", "スペード", "ダイヤ"))
+
+    def connect_value_and_suit(self, value, suit):
+        return f"{suit}の{value}"
