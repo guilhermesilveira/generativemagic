@@ -92,3 +92,19 @@ class Portuguese(Language):
 
     def name_to_position(self, name: str):
         return _name_to_position(self._names, self._suits, name)
+
+class Japanese(Language):
+    def __init__(self):
+        self._names = ["", "えーす", "に", "さん", "よん", "ご",
+                       "ろく", "なな", "はち", "きゅう", "じゅう",
+                       "じゃっく", "くいーん", "きんぐ"]
+        self._suits = ["クラブ", "ハート", "スペード", "ダイヤ"]
+
+    def card_name(self, c):
+        return f"{self._names[position_to_value(c)]} の {self.position_to_suit_name(c)}"
+
+    def position_to_suit_name(self, k):
+        return self._suits[position_to_suit(k)]
+
+    def name_to_position(self, name):
+        return _name_to_position(self._names, self._suits, name)
