@@ -1,12 +1,12 @@
 from generativemagic.decks import value_and_suit_to_card, SUIT_CLUBS, SUIT_HEARTS, is_int_card
 from generativemagic.effect import Effect
 
+from generativemagic.spelling import Language, CachedLanguage, English
+
 THREE_CLUBS = value_and_suit_to_card(3, SUIT_CLUBS)
 THREE_HEARTS = value_and_suit_to_card(3, SUIT_HEARTS)
 TWO_CLUBS = value_and_suit_to_card(2, SUIT_CLUBS)
 REQUIRED_CARDS = [THREE_CLUBS, THREE_HEARTS, TWO_CLUBS]
-
-from generativemagic.spelling import Language, CachedLanguage, Portuguese, English
 
 
 class IsImpromptuSpelled:
@@ -22,6 +22,7 @@ class IsImpromptuSpelled:
 
         if not is_int_card(chosen):
             return None
+
         name = self._language.card_name(chosen)
         length = len(name.replace(" ", ""))
 
@@ -47,7 +48,7 @@ class IsImpromptuSpelled:
 
 class ImpromptuSpelled(Effect):
 
-    def apply(self, sequence):
+    def apply(self, sequence, chosen=None):
         pass
 
     def __repr__(self):
