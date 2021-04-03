@@ -95,13 +95,13 @@ class Portuguese(Language):
 
 class Japanese(Language):
     def __init__(self):
-        self._names = ["", "一", "二", "三", "四", "五",
-                       "六", "七", "八", "九", "十",
-                       "ジャック", "クイーン", "キング"]
+        self._names = ["", "えーす", "に", "さん", "よん", "ご",
+                       "ろく", "なな", "はち", "きゅう", "じゅう",
+                       "じゃっく", "くいーん", "きんぐ"]
         self._suits = ["クラブ", "ハート", "スペード", "ダイヤ"]
 
     def card_name(self, c):
-        return f"{self._names[position_to_value(c)]} of {self.position_to_suit_name(c)}"
+        return f"{self._names[position_to_value(c)]} の {self.position_to_suit_name(c)}"
 
     def position_to_suit_name(self, k):
         return self._suits[position_to_suit(k)]
