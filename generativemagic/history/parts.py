@@ -1,4 +1,6 @@
 from collections import Counter
+from functools import partial
+from multiprocessing import Pool
 
 from tqdm import tqdm
 
@@ -151,35 +153,41 @@ def find_best_effect(all_effects: dict) -> Effects:
     return effect
 
 
-def explore_entire_results_history(decks, parts, language: Language, prune=None):
+def explore_single(my_deck, parts, language: Language, prune=None):
+    return explore_all(language, my_deck, parts,
+                       prune=prune)
+
+
+def explore_entire_results_history(decks, parts, language: Language, prune=None, threads=1):
     failed = []
+    total_count = len(decks)
     total_lacking = 0
     failed_count = 0
     failed_cards = []
-    filter_first = 50
-    win = 0
-    progress = tqdm(decks[:filter_first])
+    win_count = 0
 
     # logging.getLogger().setLevel(logging.INFO)
+    p = partial(explore_single, parts=parts, language=language, prune=prune)
 
-    for my_deck in progress:
-        win_message = f"Win/Fail: {win}/{failed_count}"
-        progress.set_description(win_message)
-        result = explore_all(language, my_deck, parts,
-                             prune=prune)
-        if result.has_finished():
-            win += 1
-        else:
-            lacking = len(result.remaining_deck())
-            total_lacking += lacking
-            failed_count += 1
-            failed.append(f"{result.remaining_deck()} - {lacking}")
-            failed_cards.append(result.current_value())
+    with Pool(threads) as pool:
+        progress = tqdm(pool.imap(p, decks), total=total_count)
+        for result in progress:
+            to_go = total_count - win_count - failed_count
+            win_message = f"Win {win_count} | Fail {failed_count} | To go {to_go}"
+            progress.set_description(win_message)
+            if result.has_finished():
+                win_count += 1
+            else:
+                lacking = len(result.remaining_deck())
+                total_lacking += lacking
+                failed_count += 1
+                failed.append(f"{result.remaining_deck()} - {lacking}")
+                failed_cards.append(result.current_value())
 
     failed_cards = Counter(failed_cards)
     failed = "\n".join(failed)
-    print(f"% lacking: {total_lacking / filter_first}")
-    print(f"Success: {win}")
+    print(f"% lacking: {total_lacking / total_count}")
+    print(f"Success: {win_count}")
     print(f"Failed: {failed_count}")
     print(failed_cards)
     print(failed)
