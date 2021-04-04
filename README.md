@@ -1,14 +1,16 @@
 ## What is this project?
 
-GenerativeMagic is [Guilherme Silveira's](https://www.linkedin.com/in/guilhermeazevedosilveira) interpretation on generative magic,
-the use of [Generative Design](https://en.wikipedia.org/wiki/Generative_design) for the magic art.
+GenerativeMagic is the use of [Generative Design](https://en.wikipedia.org/wiki/Generative_design) for the magical art.
 
-And what is generative magic? It is magic created, enhanced or suggested by a computer, a field of computer-automated design
+What? It is magic created, enhanced or suggested by a computer, a field of computer-automated design
 and computer art coined by this project.
+
+So it is like computer generated graphics, but for magic? No. Generative art (and design) is much more that just generating
+graphics, it helps us design new magical effects, improve existing ones and much more.
 
 ## How can a computer create magic?
 
-Elmsley and many other magicians deduced formulas to create amazing effects. Now we can discover, combine and generate
+Elmsley and other magicians deduced formulas to create amazing effects. Now we can discover, combine and generate
 infinite possibilities with generative magic.
 
 Computers can aid in the creation process of magic in several ways. This project aims but is not limited to the following topics:
