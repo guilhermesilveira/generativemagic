@@ -1,6 +1,7 @@
 from collections import Counter
 from functools import partial
 from multiprocessing import Pool
+from typing import List
 
 from tqdm import tqdm
 
@@ -10,7 +11,7 @@ import logging
 
 
 class PartsStructure:
-    def explore(self, all_effects: dict, prune=52, limit_per_part=10000):
+    def explore(self, all_effects: dict, anytime_parts: List, prune=52, limit_per_part=10000):
         raise Exception(f"Parts exploration must be implemented on {type(self)}")
 
 
@@ -20,11 +21,12 @@ class SimpleParts(PartsStructure):
         self._minimum = minimum
         self._parts = parts
 
-    def explore(self, all_effects: dict, prune=52, limit_per_part=10000):
+    def explore(self, all_effects: dict, anytime_parts: List, prune=52, limit_per_part=10000):
         # ugly, improve it
         if self._maximum:
             limit_per_part = self._maximum
-        possibilities = all_possibilities_for(self._parts, self._minimum, limit_per_part)
+
+        all_possible_stories = all_possibilities_for(self._parts, self._minimum, limit_per_part)
 
         temp_all_effects = self.create_temporary_list_of_effects_so_far(all_effects)
 
@@ -36,9 +38,11 @@ class SimpleParts(PartsStructure):
                 continue
 
             snapshot = effects.copy()
-            for possibility in possibilities:
+            for stories in all_possible_stories:
                 effects = snapshot.copy()
-                for story in possibility:
+                for story in stories:
+                    for part in anytime_parts:
+                        part(effects)
                     story(effects)
                     if effects.has_finished():
                         return effects
@@ -77,17 +81,17 @@ class Optional(PartsStructure):
             raise Exception("Only a single part can be optional")
         self._part = part
 
-    def explore(self, all_effects: dict, prune=52, limit_per_part=10000):
-        return SimpleParts([self._part]).explore(all_effects, prune, limit_per_part)
+    def explore(self, all_effects: dict, anytime_parts: List[PartsStructure], prune=52, limit_per_part=10000):
+        return SimpleParts([self._part]).explore(all_effects, anytime_parts, prune, limit_per_part)
 
 
 class OrParts(PartsStructure):
     def __init__(self, parts):
-        super().__init__(parts)
+        self._parts = parts
 
-    def explore(self, all_effects: dict, prune=52, limit_per_part=10000):
+    def explore(self, all_effects: dict, anytime_parts: List, prune=52, limit_per_part=10000):
         for sub_parts in self._parts:
-            result = _explore(sub_parts, all_effects, prune, limit_per_part)
+            result = _explore(sub_parts, anytime_parts, all_effects, prune, limit_per_part)
             if type(result) == Effects:
                 return result
             if result != all_effects:
@@ -95,10 +99,10 @@ class OrParts(PartsStructure):
         return all_effects
 
 
-def _explore(parts, all_effects: dict, prune=52, limit_per_part=10000):
+def _explore(parts, anytimes_parts: List, all_effects: dict, prune: int = 52, limit_per_part: int = 10000):
     if type(parts) == list:
-        return SimpleParts(parts).explore(all_effects, prune, limit_per_part)
-    return parts.explore(all_effects, prune, limit_per_part)
+        return SimpleParts(parts).explore(all_effects, anytimes_parts, prune, limit_per_part)
+    return parts.explore(all_effects, anytimes_parts, prune, limit_per_part)
 
 
 class Parts:
@@ -125,7 +129,8 @@ class Parts:
         return self.add(AtLeastOnePart(parts, minimum=1))
 
 
-def explore_all(language: Language, sequence: list, all_parts: list,
+def explore_all(language: Language, sequence: List[int], all_parts: List,
+                anytime_parts: List[PartsStructure],
                 prune: int = 1000, limit_per_part=10) -> Effects:
     base_effects = Effects(language, sequence)
     all_effects = {0: base_effects}
@@ -134,8 +139,14 @@ def explore_all(language: Language, sequence: list, all_parts: list,
 
     for parts in all_parts:
 
+        # for part in anytime_parts:
+        #     result = part.explore(all_effects, anytime_parts, prune, limit_per_part)
+        #     if type(result) == Effects:
+        #         return result
+        #     all_effects = result
+
         logging.debug(f"Going for parts {parts}")
-        result = _explore(parts, all_effects,
+        result = _explore(parts, anytime_parts, all_effects,
                           prune=prune, limit_per_part=limit_per_part)
         if type(result) == Effects:
             return result
@@ -153,12 +164,12 @@ def find_best_effect(all_effects: dict) -> Effects:
     return effect
 
 
-def explore_single(my_deck, parts, language: Language, prune=None):
-    return explore_all(language, my_deck, parts,
-                       prune=prune)
+def explore_single(my_deck, parts, anytime_parts, language: Language, prune=None):
+    return explore_all(language, my_deck, parts, anytime_parts, prune=prune)
 
 
-def explore_entire_results_history(decks, parts, language: Language, prune=None, threads=1):
+def explore_entire_results_history(decks, parts, anytime_parts,
+                                   language: Language, prune=None, threads=1):
     failed = []
     total_count = len(decks)
     total_lacking = 0
@@ -167,7 +178,7 @@ def explore_entire_results_history(decks, parts, language: Language, prune=None,
     win_count = 0
 
     # logging.getLogger().setLevel(logging.INFO)
-    p = partial(explore_single, parts=parts, language=language, prune=prune)
+    p = partial(explore_single, parts=parts, anytime_parts=anytime_parts, language=language, prune=prune)
 
     with Pool(threads) as pool:
         progress = tqdm(pool.imap(p, decks), total=total_count)
