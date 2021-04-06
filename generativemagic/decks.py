@@ -9,6 +9,16 @@ JACK = 11
 QUEEN = 12
 KING = 13
 
+TWOS = [2, 2 + 13, 2 + 26, 2 + 39]
+THREES = [3, 3 + 13, 3 + 26, 3 + 39]
+FOURS = [4, 4 + 13, 4 + 26, 4 + 39]
+FIVES = [5, 5 + 13, 5 + 26, 5 + 39]
+SIXES = [6, 6 + 13, 6 + 26, 6 + 39]
+EIGHTS = [8, 8 + 13, 8 + 26, 8 + 39]
+NINES = [9, 9 + 13, 9 + 26, 9 + 39]
+QUEENS = [12, 12 + 13, 12 + 26, 12 + 39]
+KINGS = [13, 13 + 13, 13 + 26, 13 + 39]
+
 
 def simple_deck():
     """A deck Ace to King. This is NOT the united statess based new deck order!"""
