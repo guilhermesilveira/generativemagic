@@ -1,6 +1,7 @@
 from collections import Iterable
+from typing import List
 
-from z3 import And
+from z3 import And, Or
 
 
 def rules_aces_on_top(all_vars):
@@ -38,7 +39,7 @@ class AllCardsOnDeck:
     def rules(self) -> Iterable:
         return self.__rules
 
-    def add_final_rules(self, all_vars):
+    def add_final_rules(self, all_vars: List[int]):
         self.__rules = [rules_all_cards_on_deck(all_vars)]
 
 
@@ -50,7 +51,7 @@ class Ruler:
     def create_rule(self, x, deck):
         pass
 
-    def add_final_rules(self, all_vars):
+    def add_final_rules(self, all_vars: List[int]):
         pass
 
 
@@ -71,3 +72,16 @@ class AndRuler(Ruler):
         for ruler in self.__rulers:
             all_rules.extend(ruler.rules())
         return all_rules
+
+
+def add_sequential_condition(firsts, seconds, all_vars):
+    """all of the first must be followed by one of the seconds"""
+    rules = []
+    for first in firsts:
+        possibles = []
+        first_var = all_vars[first - 1]
+        for second in seconds:
+            second_var = all_vars[second - 1]
+            possibles.append(first_var == (second_var + 1))
+        rules.append(Or(possibles))
+    return rules
