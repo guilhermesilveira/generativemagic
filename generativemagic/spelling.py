@@ -100,6 +100,17 @@ class English(SimpleLanguage):
         return f"{value} of {suit}"
 
 
+class PortugueseCommon(SimpleLanguage):
+
+    def __init__(self):
+        super().__init__(("", "as", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+                          "valete", "dama", "rei"),
+                         ("paus", "coração", "espadas", "diamantes"))
+
+    def connect_value_and_suit(self, value, suit):
+        return f"{value} de {suit}"
+
+
 class Portuguese(SimpleLanguage):
 
     def __init__(self):
