@@ -130,6 +130,9 @@ class Effects:
             return True
         return False
 
+    def value_in(self, minimum, maximum):
+        return minimum <= self.current_value() <= maximum
+
 
 def all_possibilities_for(parts, minimum=0, limit_per_part=10000):
     possibilities = []
