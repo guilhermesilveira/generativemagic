@@ -85,3 +85,27 @@ def add_sequential_condition(firsts, seconds, all_vars):
             possibles.append(first_var == (second_var + 1))
         rules.append(Or(possibles))
     return rules
+
+
+def not_on_border(elements: List[int], all_vars,
+                  can_be_on_first: bool = False,
+                  can_be_on_last: bool = False):
+    """all of the elements must not be in the border"""
+    rules = []
+    for element in elements:
+        var = all_vars[element - 1]
+        if not can_be_on_first:
+            rules.append(var >= 2)
+        if not can_be_on_last:
+            rules.append(var <= 51)
+    return rules
+
+
+def on_deck(elements: List[int], all_vars):
+    """all of the elements must be within the deck"""
+    rules = []
+    for element in elements:
+        var = all_vars[element - 1]
+        rules.append(var >= 1)
+        rules.append(var <= 52)
+    return rules
