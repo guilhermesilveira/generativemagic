@@ -103,7 +103,8 @@ class English(SimpleLanguage):
 class Portuguese(SimpleLanguage):
 
     def __init__(self):
-        super().__init__(("", "as", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+        super().__init__(("", "as", "dois", "tres", "quatro", "cinco",
+                          "seis", "sete", "oito", "nove", "dez",
                           "valete", "dama", "rei"),
                          ("paus", "copas", "espadas", "ouros"))
 
