@@ -1,5 +1,6 @@
 import logging
 from itertools import permutations
+from typing import List
 
 from generativemagic.decks import position_to_value, position_to_suit
 from generativemagic.mapper import run_parameter_space
@@ -8,7 +9,7 @@ from generativemagic.spelling import Language
 
 class Effects:
 
-    def __init__(self, language: Language, sequence: list, effects=None, starting=0):
+    def __init__(self, language: Language, sequence: List[int], effects=None, starting=0):
         self._language = language
         self._sequence = sequence
         if not effects:
@@ -17,8 +18,11 @@ class Effects:
         self._current = starting
         self._update_values()
 
+    def original_sequence(self):
+        return self._sequence
+
     def _update_values(self):
-        self._current_card = self._sequence[self._current]
+        self._current_card = int(self._sequence[self._current])
         self._current_value = position_to_value(self._current_card)
         self._current_suit = position_to_suit(self._current_card)
 
@@ -29,13 +33,15 @@ class Effects:
         return self._current_suit
 
     def move_to_next_card(self):
+        if self.has_finished():
+            return
         self._current += 1
         if self.has_finished():
             return
         self._update_values()
 
     def next_two_are(self, a, b):
-        if self.is_out_of_bounds(+1):
+        if self.is_out_of_bounds(1):
             return False
         following = position_to_value(self._sequence[self._current + 1])
         if self._current_value == a and following == b:
@@ -103,7 +109,7 @@ class Effects:
         return False
 
     def append(self, quantity, text):
-        if self.is_out_of_bounds(0):
+        if self.has_finished():
             return
         pretext = []
         for i in range(quantity):
@@ -119,7 +125,7 @@ class Effects:
         return None
 
     def is_out_of_bounds(self, delta):
-        return self._current + delta >= len(self._sequence) - 1
+        return self._current + delta >= len(self._sequence)
 
     def has_finished(self):
         return self.is_out_of_bounds(0)
@@ -134,6 +140,8 @@ class Effects:
         return minimum <= self.current_value() <= maximum
 
     def matches_values(self, values):
+        if self.is_out_of_bounds(len(values)):
+            return False
         for delta, value in enumerate(values):
             found = self._sequence[self._current + delta]
             if position_to_value(found) != value:
