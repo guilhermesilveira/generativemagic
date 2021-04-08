@@ -139,12 +139,6 @@ def explore_all(language: Language, sequence: List[int], all_parts: List,
 
     for parts in all_parts:
 
-        # for part in anytime_parts:
-        #     result = part.explore(all_effects, anytime_parts, prune, limit_per_part)
-        #     if type(result) == Effects:
-        #         return result
-        #     all_effects = result
-
         logging.debug(f"Going for parts {parts}")
         result = _explore(parts, anytime_parts, all_effects,
                           prune=prune, limit_per_part=limit_per_part)
@@ -177,7 +171,6 @@ def explore_entire_results_history(decks, parts, anytime_parts,
     failed_cards = []
     win_count = 0
 
-    # logging.getLogger().setLevel(logging.INFO)
     p = partial(explore_single, parts=parts, anytime_parts=anytime_parts, language=language, prune=prune)
 
     with Pool(threads) as pool:
@@ -192,7 +185,9 @@ def explore_entire_results_history(decks, parts, anytime_parts,
                 lacking = len(result.remaining_deck())
                 total_lacking += lacking
                 failed_count += 1
-                failed.append(f"{result.remaining_deck()} - {lacking}")
+                failed.append(f"{result.remaining_deck()} - {lacking} - {result.original_sequence()}")
+                print(result.original_sequence())
+                print(result.description())
                 failed_cards.append(result.current_value())
 
     failed_cards = Counter(failed_cards)
