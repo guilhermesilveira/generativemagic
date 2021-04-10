@@ -9,33 +9,33 @@ from generativemagic.mapper import EffectInvalidParameterError
 
 def global_parameter_space():
     """This parameter space is unnecessarily too large"""
-    return [list(range(7, 17, 1)),
-            list(range(12, 27, 1)),
-            list(range(15, 37, 1)),
-            list(permutations(range(1, 5), 4))]
+    return [list(range(7, 22)),
+            list(range(12, 27)),
+            list(range(25, 40)),
+            list(permutations(range(1, 5)))]
 
 
 def parameter_space():
     """This is a good parameter space as you spread the cards in your hands or go over them with your fingers.
     Remember to control the starting point by calling the next volunteer to say stop. The stop point by hiding 
     the cards with your other hand."""
-    return [list(range(7, 17, 1)),
-            list(range(17, 27, 1)),
-            list(range(27, 37, 1)),
+    return [list(range(7, 17)),
+            list(range(17, 27)),
+            list(range(27, 37)),
             list(permutations(range(1, 5), 4))]
 
 
 def basic_parameter_space2():
-    return [list(range(9, 15, 1)),
-            list(range(15, 21, 1)),
-            list(range(21, 27, 1)),
+    return [list(range(9, 15)),
+            list(range(15, 21)),
+            list(range(21, 27)),
             list(permutations(range(1, 5), 4))]
 
 
 def basic_parameter_space():
-    return [list(range(9, 15, 1)),
-            list(range(15, 19, 1)),
-            list(range(19, 26, 1)),
+    return [list(range(9, 15)),
+            list(range(15, 19)),
+            list(range(19, 26)),
             list(permutations(range(1, 5), 4))]
 
 
