@@ -1,17 +1,17 @@
 from collections import Iterable
 from typing import List
 
-from z3 import And, Or
+from z3 import And, Or, Int
 
 
-def rules_aces_on_top(all_vars):
+def rules_aces_on_top(all_vars: List[Int]):
     """Returns 4 rules so that all aces are on the top 4 positions"""
 
     aces = [all_vars[0], all_vars[13], all_vars[26], all_vars[39]]
     return list(map(rule_card_on_top_4, aces))
 
 
-def rule_card_on_top_4(var_card):
+def rule_card_on_top_4(var_card: Int):
     """Returns one rule so that the card is on one of the top 4 positions"""
 
     # 24k => test_aces 234 secs
@@ -20,7 +20,7 @@ def rule_card_on_top_4(var_card):
     # return Or(var_card == 1, var_card == 2, var_card == 3, var_card == 4)
 
 
-def rules_all_cards_on_deck(all_vars):
+def rules_all_cards_on_deck(all_vars: List[Int]):
     """Returns 52 cards must be on deck"""
     rules = []
     for var_card in all_vars:
