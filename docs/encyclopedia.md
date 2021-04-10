@@ -201,3 +201,8 @@ The following effects have simpler versions to achieve the same result.
 ## New Card Discovery
 > A card is selected and put back on top. The cards are spread and the selected one is learned or revealed.
 - Guilherme: The recognition method is simplified with the use of a single key card.
+
+## Odd or Even
+> Jordan
+> Generalization by Guilherme Silveira:
+> 13 (or more) cards where the information regarding odd/even of the previous 4 tells you which one was picked.
