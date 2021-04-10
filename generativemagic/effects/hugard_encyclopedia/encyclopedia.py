@@ -76,7 +76,6 @@ class SpellingPositionRuler(Ruler):
         self.__rules.add(all_ors)
 
     def __add_rules_for_cards_must_be_in_deck(self, all_vars):
-        # self.__rules.extend(rules_aces_on_top(all_vars))
         for r in rules_aces_on_top(all_vars):
             self.__rules.add(r)
 
