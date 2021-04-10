@@ -1,5 +1,5 @@
 from generativemagic.decks import SUIT_CLUBS, value_and_suit_to_card, position_to_suit, SUIT_DIAMONDS, SUIT_SPADES, \
-    SUIT_HEARTS, position_to_value
+    SUIT_HEARTS, position_to_value, deck_as_str
 
 
 def test_position_to_suit():
@@ -33,3 +33,8 @@ def test_value_and_suit_to_card():
         assert value_and_suit_to_card(i, SUIT_SPADES) == SUIT_SPADES * 13 + i
     for i in range(1, 13 + 1):
         assert value_and_suit_to_card(i, SUIT_DIAMONDS) == SUIT_DIAMONDS * 13 + i
+
+
+def test_deck_as_str():
+    assert "1,3,2,4" == deck_as_str([1, 3, 2, 4])
+    assert "" == deck_as_str([])

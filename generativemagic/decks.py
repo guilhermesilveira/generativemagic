@@ -6,6 +6,14 @@ SUIT_SPADES = 2
 SUIT_DIAMONDS = 3
 ACE = 1
 TWO = 2
+THREE = 3
+FOUR = 4
+FIVE = 5
+SIX = 6
+SEVEN = 7
+EIGHT = 8
+NINE = 9
+TEN = 10
 JACK = 11
 QUEEN = 12
 KING = 13
@@ -41,19 +49,24 @@ def position_to_suit(k: int) -> int:
     return int((k - 1) / 13)
 
 
-def position_to_suit_color(k):
+def position_to_suit_color(k: int):
     assert 0 < k < 53
     return int((k - 1) / 13) % 2
 
 
-def value_and_suit_to_card(value, suit):
+def value_and_suit_to_card(value: int, suit: int):
     assert 0 < value < 14 and 0 <= suit <= 3
     return suit * 13 + value
 
 
-def value_and_suit_to_card_position_on_simple_deck(value, suit):
+def value_and_suit_to_card_position_on_simple_deck(value: int, suit: int):
     return value_and_suit_to_card(value, suit) - 1
 
 
-def is_int_card(card):
+def is_int_card(card: int):
     return isinstance(card, (int, np.integer))
+
+
+def deck_as_str(sequence):
+    """Returns a deck as a string"""
+    return ",".join(map(str, sequence))
