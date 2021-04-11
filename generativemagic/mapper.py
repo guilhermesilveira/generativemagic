@@ -14,7 +14,6 @@ class EffectInvalidParameterError(BaseException):
 
 
 def run_parameter_space(type_to_map, parameter_space, callback=None, deck_creator=simple_deck):
-    print(parameter_space)
     items = list(product(*parameter_space))
     results = []
     with tqdm(total=len(items)) as progress_bar:
