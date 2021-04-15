@@ -26,7 +26,7 @@ def explore_single(parameters, type_to_map: Type, deck_creator):
 
 
 def run_parameter_space(type_to_map: Type, parameter_space, callback=None, deck_creator=simple_deck, threads=1):
-    items = [item for item in product(*parameter_space)]
+    items = list(product(*parameter_space))
     results = []
 
     p = partial(explore_single, type_to_map=type_to_map, deck_creator=deck_creator)
