@@ -126,6 +126,18 @@ class Portuguese(SimpleLanguage):
         return f"{value} de {suit}"
 
 
+class French(SimpleLanguage):
+
+    def __init__(self):
+        super().__init__(("", "as", "deux", "trois", "quatre", "cinq",
+                          "six", "sept", "huit", "neuf", "dix",
+                          "valet", "dame", "roi"),
+                         ("trèfles", "cœurs", "piques", "carreaux"))
+
+    def connect_value_and_suit(self, value, suit):
+        return f"{value} de {suit}"
+
+
 class Japanese(SimpleLanguage):
     def __init__(self):
         super().__init__(("", "エース", "に", "さん", "よん", "ご",
