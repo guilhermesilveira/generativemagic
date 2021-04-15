@@ -1,12 +1,20 @@
 from collections import defaultdict
-from functools import partial
+from typing import List
 
-from generativemagic.effects.hugard_encyclopedia.encyclopedia import SpellingPositionRuler
+from generativemagic.effects.guilhermesilveira.spelling_position_ruler import SpellingPositionRuler
 from generativemagic.mapper import run_parameter_space
 from generativemagic.solver.rules import AndRuler
 from generativemagic.solver.solver import RuleSolver
 from generativemagic.solver.variables import create_card_variables
 from generativemagic.spelling import Language
+
+
+def get_vars_per_length(all_vars: List, names: List) -> defaultdict:
+    vars_per_length = defaultdict(list)
+    for card, full_name in zip(all_vars, names):
+        simple_name = full_name.replace(" ", "")
+        vars_per_length[len(simple_name)].append(card)
+    return vars_per_length
 
 
 class SpellingDesigner:
@@ -25,24 +33,28 @@ class SpellingDesigner:
 
     def __init__(self, language: Language):
         self.__language = language
+        self.all_vars, self.vars_per_length = self._fill_card_variables()
 
-    def fill_card_variables(self):
-        all_vars = create_card_variables(self.__language)
-        vars_per_length = defaultdict(list)
-        for card in all_vars:
-            full_name = card.sexpr()
-            simple_name = full_name.replace(" ", "")
-            vars_per_length[len(simple_name)].append(card)
+    def _fill_card_variables(self):
+        all_vars, names = create_card_variables(self.__language)
+        vars_per_length = get_vars_per_length(all_vars, names)
         return all_vars, vars_per_length
 
-    def run(self, space, effect_type, extra_ruler=None, card_limiter=None, threads=1):
-        all_vars, vars_per_length = self.fill_card_variables()
-
-        spelling = SpellingPositionRuler(all_vars, vars_per_length, [0, -2, -4], [], card_limiter)
+    def run(self, space, effect_type,
+            extra_rulers=None,
+            card_limiter=None,
+            supports_next=False,
+            threads=1):
+        spelling = SpellingPositionRuler(self.all_vars, self.vars_per_length,
+                                         deltas_from_top=[0, -2, -4],
+                                         supports_next=supports_next,
+                                         deltas_from_bottom=[],
+                                         card_limiter=card_limiter)
         run_parameter_space(effect_type, space, spelling.create_rule, threads=threads)
 
-        if extra_ruler:
-            spelling = AndRuler([spelling, extra_ruler])
-            spelling.add_final_rules(all_vars)
+        if extra_rulers:
+            spelling = AndRuler([spelling] + extra_rulers)
+
+        spelling.add_final_rules(self.all_vars)
 
         RuleSolver().solve(spelling)

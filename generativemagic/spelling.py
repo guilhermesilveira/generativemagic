@@ -48,6 +48,9 @@ class Language:
             names[len(name)].append(full_name)
         return names
 
+    def all_names(self):
+        return list(map(self.card_name, range(1, 53)))
+
 
 class CachedLanguage(Language):
     """Implementation that caches all card names."""

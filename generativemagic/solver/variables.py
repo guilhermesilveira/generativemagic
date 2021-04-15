@@ -4,6 +4,6 @@ from generativemagic.spelling import Language
 
 
 def create_card_variables(language: Language):
-    names = map(language.card_name, range(1, 53))
+    names = language.all_names()
     our_vars = map(Int, names)
-    return list(our_vars)
+    return list(our_vars), names
