@@ -4,7 +4,7 @@ from typing import List
 import z3
 from z3 import Or, AtMost, Int
 
-from generativemagic.solver.rules import Ruler, rules_aces_on_top
+from generativemagic.solver.rules import Ruler, rules_aces_on_top, rules_all_cards_on_deck
 
 
 class SpellingPositionRuler(Ruler):
@@ -47,8 +47,8 @@ class SpellingPositionRuler(Ruler):
         self.__rules.add(all_ors)
 
     def __add_rules_for_cards_must_be_in_deck(self, all_vars):
-        for r in rules_aces_on_top(all_vars):
-            self.__rules.add(r)
+        self.__rules.update(rules_aces_on_top(all_vars))
+        self.__rules.add(rules_all_cards_on_deck(all_vars))
 
         for c in self.used_positions:
             all_conditions = [card == c for card in all_vars]
