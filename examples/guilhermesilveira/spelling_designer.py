@@ -44,16 +44,18 @@ class SpellingDesigner:
             extra_rulers=None,
             card_limiter=None,
             supports_next=False,
+            deltas_from_top=(0, -2, -4),
+            deltas_from_bottom=(),
             threads=1):
         spelling = SpellingPositionRuler(self.all_vars, self.vars_per_length,
-                                         deltas_from_top=[0, -2, -4],
+                                         deltas_from_top=deltas_from_top,
                                          supports_next=supports_next,
-                                         deltas_from_bottom=[],
+                                         deltas_from_bottom=deltas_from_bottom,
                                          card_limiter=card_limiter)
-        run_parameter_space(effect_type, space, spelling.create_rule, threads=threads)
-
         if extra_rulers:
             spelling = AndRuler([spelling] + extra_rulers)
+
+        run_parameter_space(effect_type, space, spelling.create_rule, threads=threads)
 
         spelling.add_final_rules(self.all_vars)
 
