@@ -6,8 +6,8 @@ from generativemagic.spelling import CachedLanguage, English
 def main():
     language = CachedLanguage(English())
     example = SpellingDesigner(language)
-    # example.run(basic_parameter_space(), effect_type=RiffleShuffle)
-    example.run(parameter_space(), effect_type=RiffleShuffle)
+    # example.run(basic_parameter_space(), effect_type=RiffleShuffle, threads=8)
+    example.run(parameter_space(), effect_type=RiffleShuffle, threads=8)
 
 
 if __name__ == '__main__':

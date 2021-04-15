@@ -1,6 +1,6 @@
 from collections import defaultdict
+from functools import partial
 
-from generativemagic.effects.four_aces import FourAces
 from generativemagic.effects.hugard_encyclopedia.encyclopedia import SpellingPositionRuler
 from generativemagic.mapper import run_parameter_space
 from generativemagic.solver.rules import AndRuler
@@ -35,12 +35,11 @@ class SpellingDesigner:
             vars_per_length[len(simple_name)].append(card)
         return all_vars, vars_per_length
 
-    def run(self, space, extra_ruler=None, card_limiter=None, effect_type=FourAces):
+    def run(self, space, effect_type, extra_ruler=None, card_limiter=None, threads=1):
         all_vars, vars_per_length = self.fill_card_variables()
 
         spelling = SpellingPositionRuler(all_vars, vars_per_length, [0, -2, -4], [], card_limiter)
-
-        run_parameter_space(effect_type, space, spelling.create_rule)
+        run_parameter_space(effect_type, space, spelling.create_rule, threads=threads)
 
         if extra_ruler:
             spelling = AndRuler([spelling, extra_ruler])
