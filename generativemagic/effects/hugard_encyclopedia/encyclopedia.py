@@ -38,60 +38,6 @@ class TheMagicBreath(Effect):
         return f"TheMagicBreath({self.n},put_stack_back_on_top={self.put_stack_back_on_top},put_chosen_card_on_bottom={self.put_chosen_card_on_bottom})"
 
 
-class SpellingPositionRuler(Ruler):
-    def __init__(self, all_vars, vars_per_length, deltas_from_top=None, deltas_from_bottom=None,
-                 card_limiter=lambda c: True):
-        self._card_limiter = card_limiter
-        self.__all_vars = all_vars
-        self._positions = {}
-        for i, card in enumerate(all_vars, start=1):
-            self._positions[card] = i
-        self.vars_per_length = vars_per_length
-        if deltas_from_bottom is None:
-            deltas_from_bottom = []
-        self.deltas_from_bottom = deltas_from_bottom
-        if deltas_from_top is None:
-            deltas_from_top = []
-        self.deltas_from_top = deltas_from_top
-        self.__rules = set()
-        self.used_positions = {1, 2, 3, 4}
-
-    def create_rule(self, _, deck_order):
-        all_ors = []
-        for current_length in self.vars_per_length.keys():
-            for original_card in self.vars_per_length[current_length]:
-                if self._card_limiter and not self._card_limiter(self._positions[original_card]):
-                    continue
-                for delta in self.deltas_from_top:
-                    from_top_card_number = deck_order[current_length - 1 + delta]
-                    from_top = from_top_card_number.item()
-                    self.used_positions.add(from_top)
-                    all_ors.append(original_card == from_top)
-                for delta in self.deltas_from_bottom:
-                    from_bottom_card_number = deck_order[- current_length - delta]
-                    from_bottom = from_bottom_card_number.item()
-                    self.used_positions.add(from_bottom)
-                    all_ors.append(original_card == from_bottom)
-        all_ors = Or(all_ors)
-        self.__rules.add(all_ors)
-
-    def __add_rules_for_cards_must_be_in_deck(self, all_vars):
-        for r in rules_aces_on_top(all_vars):
-            self.__rules.add(r)
-
-        for c in self.used_positions:
-            all_conditions = [card == c for card in all_vars]
-            self.__rules.add(AtMost(*all_conditions, 1))
-        logging.info(f"{len(self.used_positions)} used positions: {self.used_positions}")
-        logging.info(f"{len(self.__rules)} generated rules")
-
-    def add_final_rules(self, all_vars):
-        self.__add_rules_for_cards_must_be_in_deck(all_vars)
-
-    def rules(self):
-        return list(self.__rules)
-
-
 class PhenomenalThoughtCardsRuler(Ruler):
     """The Phenomenal Thought Cards effect allows the volunteer to pick a random card,
     put on the middle of the deck. The magician goes through the cards face down, until the magician says
