@@ -159,3 +159,16 @@ class Japanese(SimpleLanguage):
 
     def connect_value_and_suit(self, value, suit):
         return f"{suit}の{value}"
+
+
+class Translator:
+    def __init__(self, original: Language, target: Language):
+        self._original = original
+        self._target = target
+
+    def translate(self, name: str):
+        position = self._original.name_to_position(name)
+        return self._target.card_name(position)
+
+    def revert(self):
+        return Translator(self._target, self._original)
