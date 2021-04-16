@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import List
 
 from generativemagic.spelling import Language
 
@@ -6,24 +7,31 @@ from generativemagic.spelling import Language
 class IsSpelled:
     """returns a card spelled from top"""
 
-    def __init__(self, language: Language, deltas: list):
+    def __init__(self, language: Language, deltas: List[int], supports_next: bool = False):
+        self._supports_next = supports_next
         self._language = language
         self._deltas = deltas
         self._cached_lengths = defaultdict(set)
         for c in range(1, 53):
-            name = language.card_name(c).replace(" ","")
+            name = language.card_name(c).replace(" ", "")
             self._cached_lengths[len(name)].add(c)
         self.items = self._cached_lengths.keys()
 
-    def _instructions(self, card_number, direction: str, delta: int, deal: int, mention_middle: int, len_to_find, position: int):
+    def _instructions(self, card_number, direction: str, delta: int, deal: int, mention_middle: int, len_to_find,
+                      position: int):
         # TODO discover why the int transformation is being required on numpy
         card_number = int(card_number)
         card_name = self._language.card_name(card_number)
         return card_number, direction, delta, card_name, deal, mention_middle, len_to_find, position
 
-    def check(self, deck: list):
-        # this or next card, with and without OF
-        this_or_next = [0, 1]
+    def check(self, deck: List):
+        # this or next card
+        if self._supports_next:
+            this_or_next = [0, 1]
+        else:
+            this_or_next = [0]
+
+        # OF, no OF, OF with spaces
         mention_no_middle = [0, -2, 2]
         possibilities = []
 
@@ -33,6 +41,7 @@ class IsSpelled:
                     for deal in this_or_next:
 
                         position = len_to_find - 1 + delta + deal + mention_middle
+                        position = len_to_find + delta + deal + mention_middle
                         card_number = deck[position]
                         if card_number in self._cached_lengths[len_to_find]:
                             instruct = self._instructions(card_number, "from top", delta, deal, mention_middle,
