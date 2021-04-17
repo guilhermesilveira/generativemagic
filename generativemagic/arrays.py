@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def np_index(items, x):
     """Where is x in ar? This is a linear search.
 
@@ -23,3 +20,9 @@ def flat_map(xs):
     for x in xs:
         mapped.extend(x)
     return mapped
+
+
+def cards_positions(deck, cards):
+    """Returns the card positions for all cards requested"""
+    positions = [np_index(deck, card) for card in cards]
+    return sorted(positions)
