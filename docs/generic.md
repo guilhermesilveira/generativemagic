@@ -31,3 +31,8 @@
 ### OutFaro
 
 > Out faro shuffle
+
+### ScallopCut
+
+> Cuts to a scalloped, shorted, svengalied card. Simple, perfect cut to a card.""
+    
