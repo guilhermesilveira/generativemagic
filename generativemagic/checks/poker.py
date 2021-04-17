@@ -1,14 +1,12 @@
-from generativemagic.arrays import np_index
+import logging
+from typing import List
+
+from generativemagic.arrays import np_index, cards_positions
 from generativemagic.checks.basic import Checker
 
 
-def cards_positions(deck, cards):
-    positions = [np_index(deck, card) for card in cards]
-    return sorted(positions)
-
-
 class IsGenericHand:
-    def __init__(self, hands, can_second_deal, desired_cards):
+    def __init__(self, hands: List[int], can_second_deal: bool, desired_cards):
         self.__hands = hands
         self.__can_second_deal = can_second_deal
         self.__desired_cards = desired_cards
@@ -21,11 +19,18 @@ class IsGenericHand:
         return None
 
     def __check_hand(self, deck, hand):
+
         positions = cards_positions(deck, self.__desired_cards)
+
+        if -1 in positions:
+            # some of the cards were not found
+            return None
+
         length = len(deck)
+
         for starting in positions:
-            viable_positions = sorted([(starting + i * hand) % length for i in range(len(self.__desired_cards))])
-            print(viable_positions)
+            len_cards_to_count = len(self.__desired_cards)
+            viable_positions = sorted([(starting + i * hand) % length for i in range(len_cards_to_count)])
             if positions == viable_positions:
                 return positions
 
@@ -35,8 +40,12 @@ class IsGenericHand:
         # this simple O(hand) implementation does not support second dealing with any card, only with the ace
         # it also only supports the required N cards in the first N distributions
         # we can generate all combinations and make this a quick search
-        deltas = [positions[i + 1] - positions[i] - 1 for i in range(4 - 1)]
-        for position in range(hand - 2):
+
+        # deltas between each cards
+        deltas = [positions[i + 1] - positions[i] - 1 for i in range(len(positions) - 1)]
+
+        # for each but last card
+        for position in range(len(deltas) - 1):
             deltas[position] -= hand - 1
             if deltas[position] > 0:
                 # too many cards, will have to hold a non ace, fail (could be done, of course)
@@ -44,19 +53,22 @@ class IsGenericHand:
             # holding the ace and removing from the next one...
             deltas[position + 1] += deltas[position]
             deltas[position] = 0
-            print(deltas)
+
+        # for the last card
         if deltas[-1] < 0:
             # missing cards before the last ace
             return None
         if deltas[-1] > hand - 1:
             # too many cards before the last one
             return None
-        return deltas
+
+        logging.info(positions)
+        return positions, deltas
 
 
 class IsAcesHand(IsGenericHand):
-    def __init__(self, hands, can_second_deal):
-        super().__init__(hands, can_second_deal, [0, 13, 26, 39])
+    def __init__(self, hands: List[int], can_second_deal):
+        super().__init__(hands, can_second_deal, [1, 14, 27, 40])
 
 
 class ArePokerHand(Checker):
