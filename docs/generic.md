@@ -1,11 +1,19 @@
 # Generic movements
 
-# Implemented
+### TopToBottom
+> Moves n cards from the top to the bottom
 
-# To implement
+### BottomToTop
+> Moves n cards from the bottom to the top
 
-## Receive and move to top
-> Receive a card from the spectator and move to the top
+### TopToLastToBottom
+> Draw two cards from the deck in a simple motion, put them at the bottom of the deck
 
-## Receive and move to bottom
-> Receive a card from the spectator and move to the bottom
+### BottomToSecond
+> Draw two cards from the deck in a simple motion, put them at the top of the deck."""
+
+### ReceiveToTop
+> Receives a card to the top of the stack.
+
+### ReceiveToBottom(Movement):
+> Receives a card to the bottom of the stack.

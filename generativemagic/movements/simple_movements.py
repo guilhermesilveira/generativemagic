@@ -43,3 +43,23 @@ class BottomToSecond(Movement):
 
     def __repr__(self):
         return f"BottomToSecond()"
+
+
+class ReceiveToTop(Movement):
+    """Receives a card to the top of the stack."""
+
+    def apply(self, sequence, chosen=None):
+        return np.insert(sequence, 0, chosen)
+
+    def __repr__(self):
+        return f"ReceiveToTop()"
+
+
+class ReceiveToBottom(Movement):
+    """Receives a card to the bottom of the stack."""
+
+    def apply(self, sequence, chosen=None):
+        return np.concatenate([sequence, [chosen]])
+
+    def __repr__(self):
+        return f"ReceiveToBottom()"
