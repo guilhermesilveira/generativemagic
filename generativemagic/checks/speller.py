@@ -7,7 +7,9 @@ from generativemagic.spelling import Language
 class IsSpelled:
     """returns a card spelled from top"""
 
-    def __init__(self, language: Language, deltas: List[int], supports_next: bool = False):
+    def __init__(self, language: Language,
+                 deltas: List[int],
+                 supports_next: bool = False):
         self._supports_next = supports_next
         self._language = language
         self._deltas = deltas
@@ -40,7 +42,7 @@ class IsSpelled:
                 for mention_middle in mention_no_middle:
                     for deal in this_or_next:
 
-                        position = len_to_find - 1 + delta + deal + mention_middle
+                        # position = len_to_find - 1 + delta + deal + mention_middle
                         position = len_to_find + delta + deal + mention_middle
                         card_number = deck[position]
                         if card_number in self._cached_lengths[len_to_find]:
