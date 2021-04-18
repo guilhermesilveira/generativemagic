@@ -1,4 +1,8 @@
+from typing import NewType
+
 import numpy as np
+
+Deck = NewType("Deck", np.array)
 
 SUIT_CLUBS = 0
 SUIT_HEARTS = 1

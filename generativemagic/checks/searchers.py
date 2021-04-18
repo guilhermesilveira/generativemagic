@@ -1,17 +1,14 @@
 import logging
-from asyncio import Queue
 from queue import SimpleQueue
-from typing import List, Callable, NewType, Generator, Tuple, Dict
+from typing import List, Callable, NewType, Tuple
 
-import numpy as np
-
-from generativemagic.decks import simple_deck
-from generativemagic.movement import Reorder
-from generativemagic.spelling import English
 import pandas as pd
 
+from generativemagic.decks import simple_deck, Deck
+from generativemagic.movement import Reorder
+from generativemagic.spelling import English
+
 ValidationFunction = NewType("ValidationFunction", Callable[[List[int]], bool])
-Deck = NewType("Deck", np.array)
 LimiterCallback = NewType("LimiterCallback", Callable[[int], bool])
 
 
