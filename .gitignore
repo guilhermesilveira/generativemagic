@@ -5,3 +5,4 @@ __pycache__
 secret
 build
 dist
+generativemagic.egg-info
