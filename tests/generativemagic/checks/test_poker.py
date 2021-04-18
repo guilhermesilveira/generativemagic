@@ -19,11 +19,14 @@ def test_has_aces_without_second_dealing_with_another_hand():
 def test_has_aces_with_second_dealing():
     deck = [0, 1, 2, 3, 13, 1, 2, 3, 26, 1, 2, 3, 39]
     assert IsAcesHand([4], True).check(deck) == (4, [0, 4, 8, 12])
+    deck = [15, 0, 1, 2, 3, 13, 1, 2, 3, 26, 1, 2, 3, 39]
+    assert IsAcesHand([4], True).check(deck) == (4, [1, 5, 9, 13])
 
 
 def test_cannot_second_deal_first_round_with_too_many_cards():
     deck = [0, 1, 2, 3, 13, 1, 2, 3, 26, 1, 2, 3, 39]
     assert not IsAcesHand([3], True).check(deck)
+    assert not IsAcesHand([8], True).check(deck)
 
 
 def test_can_second_deal_on_first_round():
