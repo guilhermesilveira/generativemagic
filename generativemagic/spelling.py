@@ -1,24 +1,25 @@
+import importlib
 from collections import defaultdict
 from typing import Tuple, List
 
 from generativemagic.decks import position_to_value, position_to_suit
 
 
-def _matcher_starts(items, full_name: str):
+def _matcher_starts(items, full_name: str) -> int:
     for i, item in enumerate(items):
         if item != "" and full_name.startswith(item):
             return i
     raise Exception(f"Did not find {full_name} in {items}")
 
 
-def _matcher_ends(items, full_name: str):
+def _matcher_ends(items, full_name: str) -> int:
     for i, item in enumerate(items):
         if full_name.endswith(item):
             return i
     raise Exception(f"Did not find {full_name} in {items}")
 
 
-def _name_to_position(values, suits, name: str):
+def _name_to_position(values: Tuple, suits: Tuple, name: str) -> int:
     value = _matcher_starts(values, name)
     suit = _matcher_ends(suits, name)
     return value + suit * 13
@@ -30,13 +31,13 @@ class Language:
     def card_name(self, c: int) -> str:
         raise Exception(f"not implemented on {type(self)}")
 
-    def position_to_suit_name(self, k: int):
+    def position_to_suit_name(self, k: int) -> str:
         raise Exception(f"not implemented on {type(self)}")
 
-    def name_to_position(self, name: str):
+    def name_to_position(self, name: str) -> int:
         raise Exception(f"not implemented on {type(self)}")
 
-    def name_of_deck(self, deck: List[int]):
+    def name_of_deck(self, deck: List[int]) -> str:
         names = map(self.card_name, deck)
         return ",".join(names)
 
@@ -48,7 +49,7 @@ class Language:
             names[len(name)].append(full_name)
         return names
 
-    def all_names(self):
+    def all_names(self) -> List[str]:
         return list(map(self.card_name, range(1, 53)))
 
 
@@ -162,6 +163,8 @@ class Japanese(SimpleLanguage):
 
 
 class Translator:
+    """Translates from one language into another."""
+
     def __init__(self, original: Language, target: Language):
         self._original = original
         self._target = target
@@ -172,3 +175,11 @@ class Translator:
 
     def revert(self):
         return Translator(self._target, self._original)
+
+
+def instantiate_language(name: str) -> Language:
+    """Instantiates a cached version of a language based on its name"""
+    module = importlib.import_module("generativemagic.spelling")
+    class_ = getattr(module, name)
+    language = CachedLanguage(class_())
+    return language
